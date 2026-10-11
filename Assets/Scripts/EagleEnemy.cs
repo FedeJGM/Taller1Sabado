@@ -21,6 +21,7 @@ public class EagleEnemy : MonoBehaviour
         initialY = transform.position.y;
         phase = Random.value * Mathf.PI * 2f;
         dirX = Random.value < 0.5f ? -1f : 1f;
+        GetComponent<SpriteRenderer>().flipX = dirX > 0f;
     }
 
     private void Update()
