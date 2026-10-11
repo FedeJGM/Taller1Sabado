@@ -9,7 +9,9 @@ public class EagleEnemy : MonoBehaviour
     [SerializeField] private float bobAmplitude = 0.35f;
     [SerializeField] private float bobFrequency = 1.5f;
     [SerializeField] private float despawnDistance = 28f;
+    [SerializeField] private float wallCheckDistance = 0.8f;
 
+    private SpriteRenderer sr;
     private float initialY;
     private float phase;
     private float dirX;
@@ -21,11 +23,19 @@ public class EagleEnemy : MonoBehaviour
         initialY = transform.position.y;
         phase = Random.value * Mathf.PI * 2f;
         dirX = Random.value < 0.5f ? -1f : 1f;
-        GetComponent<SpriteRenderer>().flipX = dirX > 0f;
+        sr = GetComponent<SpriteRenderer>();
+        sr.flipX = dirX > 0f;
     }
 
     private void Update()
     {
+        int obstacleMask = ~(1 << gameObject.layer);
+        if (Physics2D.Raycast(transform.position, new Vector2(dirX, 0f), wallCheckDistance, obstacleMask))
+        {
+            dirX = -dirX;
+            sr.flipX = dirX > 0f;
+        }
+
         Vector3 pos = transform.position;
         pos.x += dirX * speed * Time.deltaTime;
         pos.y = initialY + Mathf.Sin((Time.time + phase) * bobFrequency) * bobAmplitude;
