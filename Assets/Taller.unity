@@ -1406,22 +1406,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Foxy
       objectReference: {fileID: 0}
-    - target: {fileID: 2669478576339507013, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3248182039941498718, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
-      propertyPath: bulletPrefab
-      value: 
-      objectReference: {fileID: 2237714267569348387, guid: 10246fa9cc3589547b35421b20ac47d3, type: 3}
-    - target: {fileID: 3770925450833429429, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3770925450833429429, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3770925450833429429, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1461,10 +1445,6 @@ PrefabInstance:
     - target: {fileID: 3770925450833429429, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5985282247448666262, guid: 955b9173b90553647a98aca42edc2af8, type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
