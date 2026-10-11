@@ -15,11 +15,14 @@ public class FrogEnemy : MonoBehaviour
     [SerializeField] private Transform frontCheck;
     [SerializeField] private float checkRadius = 0.1f;
     [SerializeField] private float edgeRayLength = 0.5f;
+    [SerializeField] private float edgeProbeRadius = 0.15f;
+    [SerializeField] private float stepTolerance = 0.3f;
     [SerializeField] private LayerMask groundLayer = ~0;
 
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private Collider2D col;
     private bool isGrounded;
     private float nextHopTime;
 
@@ -30,6 +33,7 @@ public class FrogEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
         nextHopTime = Time.time + Random.Range(0.5f, 1.5f);
         ApplyFacing();
     }
@@ -51,14 +55,26 @@ public class FrogEnemy : MonoBehaviour
         float dir = spriteRenderer.flipX ? 1f : -1f;
         rb.linearVelocity = new Vector2(dir * moveSpeed, rb.linearVelocity.y);
 
-        if (isGrounded && frontCheck != null && !Physics2D.Raycast(frontCheck.position, Vector2.down, edgeRayLength, groundLayer))
+        if (isGrounded && frontCheck != null && !Physics2D.CircleCast(frontCheck.position, edgeProbeRadius, Vector2.down, edgeRayLength, groundLayer))
             Flip();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == gameObject) return;
-        if (collision.contactCount > 0 && Mathf.Abs(collision.GetContact(0).normal.x) > 0.5f)
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Physics2D.IgnoreCollision(collision.collider, col);
+            return;
+        }
+        if (collision.contactCount == 0) return;
+
+        ContactPoint2D contact = collision.GetContact(0);
+        bool sideHit = Mathf.Abs(contact.normal.x) > 0.5f;
+        bool aboveFeet = contact.point.y > transform.position.y + stepTolerance;
+
+        if (sideHit && aboveFeet)
             Flip();
     }
 

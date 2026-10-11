@@ -237,7 +237,10 @@ MonoBehaviour:
   hopIntervalVariance: 1
   groundCheck: {fileID: 3503179123321995551}
   frontCheck: {fileID: 685977343711234068}
-  checkRadius: 0.3
+  checkRadius: 0.1
+  edgeRayLength: 0.5
+  edgeProbeRadius: 0.25
+  stepTolerance: 0.3
   groundLayer:
     serializedVersion: 2
     m_Bits: 4294967295
