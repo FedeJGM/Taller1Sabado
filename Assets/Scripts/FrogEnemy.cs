@@ -16,7 +16,7 @@ public class FrogEnemy : MonoBehaviour
     [SerializeField] private float checkRadius = 0.1f;
     [SerializeField] private float edgeRayLength = 0.5f;
     [SerializeField] private float edgeProbeRadius = 0.15f;
-    [SerializeField] private float stepTolerance = 0.3f;
+    [SerializeField] private float wallCheckDistance = 0.2f;
     [SerializeField] private LayerMask groundLayer = ~0;
 
     private Rigidbody2D rb;
@@ -55,6 +55,14 @@ public class FrogEnemy : MonoBehaviour
         float dir = spriteRenderer.flipX ? 1f : -1f;
         rb.linearVelocity = new Vector2(dir * moveSpeed, rb.linearVelocity.y);
 
+        Vector2 forward = new Vector2(dir, 0f);
+        Vector2 wallOrigin = (Vector2)col.bounds.center + forward * (col.bounds.extents.x + 0.02f);
+        if (Physics2D.Raycast(wallOrigin, forward, wallCheckDistance, groundLayer))
+        {
+            Flip();
+            return;
+        }
+
         if (isGrounded && frontCheck != null && !Physics2D.CircleCast(frontCheck.position, edgeProbeRadius, Vector2.down, edgeRayLength, groundLayer))
             Flip();
     }
@@ -66,16 +74,7 @@ public class FrogEnemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Physics2D.IgnoreCollision(collision.collider, col);
-            return;
         }
-        if (collision.contactCount == 0) return;
-
-        ContactPoint2D contact = collision.GetContact(0);
-        bool sideHit = Mathf.Abs(contact.normal.x) > 0.5f;
-        bool aboveFeet = contact.point.y > transform.position.y + stepTolerance;
-
-        if (sideHit && aboveFeet)
-            Flip();
     }
 
     private void Flip()
